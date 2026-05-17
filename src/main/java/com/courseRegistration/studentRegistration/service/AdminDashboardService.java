@@ -32,3 +32,29 @@ public class AdminDashboardService {
         this.paymentRepository = paymentRepository;
     }
 
+    public AdminDashboardDTO getDashboardSummary() {
+        long totalStudents = studentRepository.count();
+        long totalCourses = courseRepository.count();
+        List<Enrollment> allEnrollments = enrollmentRepository.findAll();
+        long totalEnrollments = allEnrollments.size();
+
+        double totalRevenue = allEnrollments.stream()
+                .map(e -> e.getPayment().getAmount())
+                .mapToDouble(java.math.BigDecimal::doubleValue)
+                .sum();
+
+        long recentRegistrations = enrollmentRepository.findAll().stream()
+                .filter(e -> e.getRegisteredAt().isAfter(LocalDateTime.now().minusDays(7)))
+                .count();
+
+        long pendingTransactions = paymentRepository.findAll().stream()
+                .filter(p -> "PENDING".equals(p.getStatus()))
+                .count();
+
+        return new AdminDashboardDTO(
+                totalStudents, totalEnrollments, totalCourses,
+                totalRevenue, recentRegistrations, pendingTransactions
+        );
+    }
+}
+
