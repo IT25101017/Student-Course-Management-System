@@ -21,5 +21,15 @@ public class LecturerController {
         return lecturerService.login(request);
     }
 
+    @GetMapping
+    public List<Lecturer> getAllLecturers() {
+        return lecturerService.getAllLecturers();
+    }
+
+    @GetMapping("/{id}")
+    public Lecturer getLecturerById(@PathVariable Long id) {
+        return lecturerService.getLecturerById(id);
+    }
+
 
 }
