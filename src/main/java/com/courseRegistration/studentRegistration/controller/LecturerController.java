@@ -1,5 +1,23 @@
 package com.courseRegistration.studentRegistration.controller;
 
+import com.courseRegistration.studentRegistration.dto.ApiMessage;
+import com.courseRegistration.studentRegistration.dto.AuthResponse;
+import com.courseRegistration.studentRegistration.dto.LecturerDashboardDTO;
+import com.courseRegistration.studentRegistration.dto.LecturerLoginRequest;
+import com.courseRegistration.studentRegistration.dto.LecturerProfileUpdateRequest;
+import com.courseRegistration.studentRegistration.dto.LecturerRegistrationRequest;
+import com.courseRegistration.studentRegistration.model.Lecturer;
+import com.courseRegistration.studentRegistration.service.LecturerService;
+import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/lecturers")
