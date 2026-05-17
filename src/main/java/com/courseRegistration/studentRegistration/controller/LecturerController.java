@@ -11,5 +11,15 @@ public class LecturerController {
         this.lecturerService = lecturerService;
     }
 
+    @PostMapping("/register")
+    public AuthResponse register(@RequestBody LecturerRegistrationRequest request) {
+        return lecturerService.register(request);
+    }
+
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody LecturerLoginRequest request) {
+        return lecturerService.login(request);
+    }
+
 
 }
