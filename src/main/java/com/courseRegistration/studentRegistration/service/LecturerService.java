@@ -103,7 +103,51 @@ public class LecturerService {
         lecturerRepository.delete(lecturer);
     }
 
+    public LecturerDashboardDTO getDashboard(Long lecturerId) {
+        Lecturer lecturer = getLecturerById(lecturerId);
+        List<LecturerCourseDTO> courses = courseRepository.findByLecturerId(lecturerId).stream()
+                .map(this::toLecturerCourseDTO)
+                .toList();
 
+        return new LecturerDashboardDTO(lecturer.getId(), lecturer.getName(), lecturer.getUsername(), courses);
+    }
+
+    private LecturerCourseDTO toLecturerCourseDTO(Course course) {
+        List<Enrollment> enrollments = enrollmentRepository.findByCourseId(course.getId());
+        List<LecturerStudentDTO> students = enrollments.stream()
+                .map(enrollment -> new LecturerStudentDTO(
+                        enrollment.getStudent().getId(),
+                        enrollment.getStudent().getStudentId(),
+                        enrollment.getStudent().getName(),
+                        enrollment.getStudent().getEmail(),
+                        enrollment.getStudent().getPhoneNumber(),
+                        enrollment.getStatus(),
+                        enrollment.getRegisteredAt()
+                ))
+                .toList();
+
+        return new LecturerCourseDTO(
+                course.getId(),
+                course.getCourseCode(),
+                course.getTitle(),
+                course.getDuration(),
+                course.getCapacity(),
+                students.size(),
+                students
+        );
+    }
+
+    private void requireText(String value, String message) {
+        if (value == null || value.isBlank()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, message);
+        }
+    }
+
+    private void validatePassword(String password) {
+        if (password.length() < MIN_PASSWORD_LENGTH) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Password must be at least 6 characters");
+        }
+    }
 
 
 }
