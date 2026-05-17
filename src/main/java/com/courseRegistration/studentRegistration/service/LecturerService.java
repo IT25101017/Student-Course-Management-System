@@ -137,7 +137,17 @@ public class LecturerService {
         );
     }
 
+    private void requireText(String value, String message) {
+        if (value == null || value.isBlank()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, message);
+        }
+    }
 
+    private void validatePassword(String password) {
+        if (password.length() < MIN_PASSWORD_LENGTH) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Password must be at least 6 characters");
+        }
+    }
 
 
 }
